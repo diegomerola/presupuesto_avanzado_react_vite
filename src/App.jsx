@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Header from "./components/Header";
 import IconoNuevoGasto from "./img/nuevo-gasto.svg";
+import Modal from "./components/Modal";
 
 function App() {
   // State para presupuesto
@@ -12,10 +13,18 @@ function App() {
   // State para modal
   const [modal, setModal] = useState(false);
 
-  // Funcion para agregar un nuevo gasto
+  // State para animar modal
+  const [animarModal, setAnimarModal] = useState(false);
+
+  // Funcion para agregar un nuevo gasto y mostrar modal
   const handleNuevoGasto = () => {
-    console.log("Nuevo gasto...");
+    // Activa modal
     setModal(true);
+
+    // Dsp de 5 segundos carga la animacion del modal
+    setTimeout(() => {
+      setAnimarModal(true);
+    }, 500);
   };
 
   return (
@@ -25,7 +34,6 @@ function App() {
         setPresupuesto={setPresupuesto}
         setIsValid={setIsValid}
         isValid={isValid}
-        IconoNuevoGasto={IconoNuevoGasto}
       />
       {isValid ? (
         <div className="nuevo-gasto">
@@ -36,7 +44,13 @@ function App() {
           ></img>
         </div>
       ) : null}
-      {modal && <p>Mostrando modal</p>}
+      {modal ? (
+        <Modal
+          setModal={setModal}
+          animarModal={animarModal}
+          setAnimarModal={setAnimarModal}
+        />
+      ) : null}
     </div>
   );
 }
