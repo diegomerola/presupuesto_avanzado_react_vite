@@ -16,6 +16,14 @@ function App() {
   // State para animar modal
   const [animarModal, setAnimarModal] = useState(false);
 
+  // State para arreglo de gastos
+  const [gastos, setGasto] = useState([]);
+
+  // Funcion para crear objeto de gasto
+  const guardarGasto = (gasto) => {
+    setGasto([...gastos, gasto]);
+  };
+
   // Funcion para agregar un nuevo gasto y mostrar modal
   const handleNuevoGasto = () => {
     // Activa modal
@@ -49,6 +57,7 @@ function App() {
           setModal={setModal}
           animarModal={animarModal}
           setAnimarModal={setAnimarModal}
+          guardarGasto={guardarGasto}
         />
       ) : null}
     </div>
