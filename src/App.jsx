@@ -1,7 +1,9 @@
 import { useState } from "react";
 import Header from "./components/Header";
-import IconoNuevoGasto from "./img/nuevo-gasto.svg";
 import Modal from "./components/Modal";
+import ListadoGastos from "./components/ListadoGastos";
+import IconoNuevoGasto from "./img/nuevo-gasto.svg";
+import { v4 as uuidv4 } from "uuid";
 
 function App() {
   // State para presupuesto
@@ -21,6 +23,13 @@ function App() {
 
   // Funcion para crear objeto de gasto
   const guardarGasto = (gasto) => {
+    // Crear id
+    gasto.id = uuidv4();
+
+    // Crear una fecha
+    gasto.fecha = Date.now();
+
+    // Agregar gasto al arreglo general de gastos
     setGasto([...gastos, gasto]);
   };
 
@@ -44,13 +53,18 @@ function App() {
         isValid={isValid}
       />
       {isValid ? (
-        <div className="nuevo-gasto">
-          <img
-            src={IconoNuevoGasto}
-            alt="Icono Nuevo Gasto"
-            onClick={handleNuevoGasto}
-          ></img>
-        </div>
+        <>
+          <main>
+            <ListadoGastos gastos={gastos} />
+          </main>
+          <div className="nuevo-gasto">
+            <img
+              src={IconoNuevoGasto}
+              alt="Icono Nuevo Gasto"
+              onClick={handleNuevoGasto}
+            ></img>
+          </div>
+        </>
       ) : null}
       {modal ? (
         <Modal

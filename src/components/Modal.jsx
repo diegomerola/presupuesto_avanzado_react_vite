@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Mensaje from "./Mensaje";
 import BtnCerrarModal from "../img/cerrar.svg";
-import { v4 as uuidv4 } from "uuid";
 
 const Modal = ({ setModal, animarModal, setAnimarModal, guardarGasto }) => {
   // Funcion para ocultar modal
@@ -9,7 +8,7 @@ const Modal = ({ setModal, animarModal, setAnimarModal, guardarGasto }) => {
     // Oculta la animacion del modal:
     setAnimarModal(false);
 
-    // Dsp de 5 segundos desactiva el modal:
+    // Dsp de 0,5 segundos desactiva el modal:
     setTimeout(() => {
       setModal(false);
     }, 500);
@@ -40,8 +39,17 @@ const Modal = ({ setModal, animarModal, setAnimarModal, guardarGasto }) => {
       return;
     } else {
       // Sino hay errores:
+
       // Crear objeto y pasarlo al arreglo de gastos
-      guardarGasto({ nombre, cantidad, categoria, id: uuidv4() });
+      guardarGasto({ nombre, cantidad, categoria });
+
+      // Oculta la animacion del modal:
+      setAnimarModal(false);
+
+      // Dsp de 0,5 segundos desactiva el modal:
+      setTimeout(() => {
+        setModal(false);
+      }, 500);
     }
   };
 
