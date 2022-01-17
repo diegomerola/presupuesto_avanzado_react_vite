@@ -9,7 +9,10 @@ import IconoSalud from "../img/icono_salud.svg";
 import IconoSuscripciones from "../img/icono_suscripciones.svg";
 
 const Gasto = ({ gasto }) => {
+  // Destructuring de gasto
   const { nombre, cantidad, categoria, fecha } = gasto;
+
+  // Objeto para asociar los iconos
   const diccionario = {
     ahorro: IconoAhorro,
     casa: IconoCasa,
