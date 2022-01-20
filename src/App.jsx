@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "./components/Header";
 import Modal from "./components/Modal";
 import ListadoGastos from "./components/ListadoGastos";
@@ -20,6 +20,22 @@ function App() {
 
   // State para arreglo de gastos
   const [gastos, setGasto] = useState([]);
+
+  // State para editar gasto
+  const [gastoEditar, setGastoEditar] = useState({});
+
+  // UseEffect para detectar cambios en gastoEditar
+  useEffect(() => {
+    if (Object.keys(gastoEditar).length > 0) {
+      handleNuevoGasto();
+    }
+  }, [gastoEditar]);
+
+  // Funcion para eliminar un gasto
+  const eliminarGasto = (id) => {
+    const gastosActualizado = gastos.filter((elemento) => elemento.id != id);
+    setGasto(gastosActualizado);
+  };
 
   // Funcion para crear objeto de gasto
   const guardarGasto = (gasto) => {
@@ -56,7 +72,11 @@ function App() {
       {isValid ? (
         <>
           <main>
-            <ListadoGastos gastos={gastos} />
+            <ListadoGastos
+              gastos={gastos}
+              setGastoEditar={setGastoEditar}
+              eliminarGasto={eliminarGasto}
+            />
           </main>
           <div className="nuevo-gasto">
             <img
