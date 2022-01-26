@@ -33,9 +33,7 @@ const Gasto = ({ gasto, setGastoEditar, eliminarGasto }) => {
   // Funciones para efecto Swipe
   const leadingActions = () => (
     <LeadingActions>
-      <SwipeAction onClick={() => setGastoEditar(gasto)} destructive={true}>
-        Editar
-      </SwipeAction>
+      <SwipeAction onClick={() => setGastoEditar(gasto)}>Editar</SwipeAction>
     </LeadingActions>
   );
   const trailingActions = () => (

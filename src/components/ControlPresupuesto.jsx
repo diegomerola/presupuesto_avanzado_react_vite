@@ -15,11 +15,11 @@ const ControlPresupuesto = ({ presupuesto, gastos }) => {
       0
     );
 
-    // Calcular lo disponible:
-    const totalDisponible = presupuesto - totalGastado;
-
     // Actualizar gastado:
     setGastado(totalGastado);
+
+    // Calcular lo disponible:
+    const totalDisponible = presupuesto - totalGastado;
 
     // Actualizar disponible:
     setDisponible(totalDisponible);

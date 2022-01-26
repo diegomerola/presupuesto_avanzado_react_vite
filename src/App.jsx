@@ -24,33 +24,12 @@ function App() {
   // State para editar gasto
   const [gastoEditar, setGastoEditar] = useState({});
 
-  // UseEffect para detectar cambios en gastoEditar
-  useEffect(() => {
-    if (Object.keys(gastoEditar).length > 0) {
-      handleNuevoGasto();
-    }
-  }, [gastoEditar]);
-
-  // Funcion para eliminar un gasto
-  const eliminarGasto = (id) => {
-    const gastosActualizado = gastos.filter((elemento) => elemento.id != id);
-    setGasto(gastosActualizado);
-  };
-
-  // Funcion para crear objeto de gasto
-  const guardarGasto = (gasto) => {
-    // Crear id
-    gasto.id = uuidv4();
-
-    // Crear una fecha
-    gasto.fecha = Date.now();
-
-    // Agregar gasto al arreglo general de gastos
-    setGasto([...gastos, gasto]);
-  };
-
   // Funcion para agregar un nuevo gasto y mostrar modal
   const handleNuevoGasto = () => {
+    // Limpiar gastoEditar
+    if (Object.keys(gastoEditar.length > 0)) {
+      setGastoEditar({});
+    }
     // Activa modal
     setModal(true);
 
@@ -59,6 +38,55 @@ function App() {
       setAnimarModal(true);
     }, 500);
   };
+
+  // Funcion para guardar objeto de gasto
+  const guardarGasto = (gasto) => {
+    // Si gasto.id tiene un valor entonces es un gasto a Editar:
+    if (gasto.id) {
+      // Buscar gasto, si coincide el id reemplazar el gasto
+      const gastosActualizados = gastos.map((gastoState) =>
+        gastoState.id === gasto.id ? gasto : gastoState
+      );
+      // Actualizar el arreglo de gastos
+      setGasto(gastosActualizados);
+    } else {
+      // Si gasto.id no tiene un valor entonces es un Nuevo Gasto:
+      // Asignar un id
+      gasto.id = uuidv4();
+
+      // Asignar una fecha
+      gasto.fecha = Date.now();
+
+      // Agregar gasto al arreglo general de gastos
+      setGasto([...gastos, gasto]);
+    }
+    // Desactivar modal:
+    setAnimarModal(false);
+
+    // Desactivar animacion:
+    setTimeout(() => {
+      setModal(false);
+    }, 500);
+  };
+
+  // Funcion para eliminar un gasto
+  const eliminarGasto = (id) => {
+    const gastosActualizado = gastos.filter((elemento) => elemento.id != id);
+    setGasto(gastosActualizado);
+  };
+
+  // UseEffect para detectar cambios en gastoEditar
+  useEffect(() => {
+    if (Object.keys(gastoEditar).length > 0) {
+      // Activa modal
+      setModal(true);
+
+      // Dsp de 5 segundos carga la animacion del modal
+      setTimeout(() => {
+        setAnimarModal(true);
+      }, 500);
+    }
+  }, [gastoEditar]);
 
   return (
     <div className={modal ? "fijar" : ""}>
@@ -93,6 +121,8 @@ function App() {
           animarModal={animarModal}
           setAnimarModal={setAnimarModal}
           guardarGasto={guardarGasto}
+          gastoEditar={gastoEditar}
+          setGastoEditar={setGastoEditar}
         />
       ) : null}
     </div>
