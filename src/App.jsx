@@ -7,7 +7,16 @@ import { v4 as uuidv4 } from "uuid";
 
 function App() {
   // State para presupuesto
-  const [presupuesto, setPresupuesto] = useState(0);
+  const [presupuesto, setPresupuesto] = useState(
+    // Obtener presupuesto del LS y parsear JSON. Sino existe asignarle = 0:
+    JSON.parse(localStorage.getItem("presupuesto") ?? 0)
+  );
+
+  // State para gastos
+  const [gastos, setGasto] = useState(
+    // Obtener gastos del LS y parsear JSON. Sino existe asignarle = []
+    JSON.parse(localStorage.getItem("gastos")) ?? []
+  );
 
   // State para presupuesto valido
   const [isValid, setIsValid] = useState(false);
@@ -17,9 +26,6 @@ function App() {
 
   // State para animar modal
   const [animarModal, setAnimarModal] = useState(false);
-
-  // State para arreglo de gastos
-  const [gastos, setGasto] = useState([]);
 
   // State para editar gasto
   const [gastoEditar, setGastoEditar] = useState({});
@@ -87,6 +93,27 @@ function App() {
       }, 500);
     }
   }, [gastoEditar]);
+
+  // useEffect al iniciar presupuesto:
+  useEffect(() => {
+    // Si al iniciar la aplicacion (parsear JSON) el presupuesto del LS es mayor a 0:
+    if (JSON.parse(localStorage.getItem("presupuesto")) > 0) {
+      // Se activa ControlPresupuesto:
+      setIsValid(true);
+    }
+  }, []);
+
+  // useEffect para cambios en presupuesto:
+  useEffect(() => {
+    // Poner el presupuesto en LS:
+    localStorage.setItem("presupuesto", JSON.stringify(presupuesto)); //stringify JSON
+  }, [presupuesto]);
+
+  // useEffect para cambios en gastos:
+  useEffect(() => {
+    // Poner gastos en LS:
+    localStorage.setItem("gastos", JSON.stringify(gastos)); //stringify JSON
+  }, [gastos]);
 
   return (
     <div className={modal ? "fijar" : ""}>
