@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Header from "./components/Header";
 import Modal from "./components/Modal";
 import ListadoGastos from "./components/ListadoGastos";
+import Filtros from "./components/Filtros";
 import IconoNuevoGasto from "./img/nuevo-gasto.svg";
 import { v4 as uuidv4 } from "uuid";
 
@@ -29,6 +30,12 @@ function App() {
 
   // State para editar gasto
   const [gastoEditar, setGastoEditar] = useState({});
+
+  // State para categoria de filtro
+  const [filtro, setFiltro] = useState([]);
+
+  // State para gastos filtrados
+  const [gastosFiltrados, setGastosFiltrados] = useState([]);
 
   // Funcion para agregar un nuevo gasto y mostrar modal
   const handleNuevoGasto = () => {
@@ -115,6 +122,18 @@ function App() {
     localStorage.setItem("gastos", JSON.stringify(gastos)); //stringify JSON
   }, [gastos]);
 
+  // useEffect para filtar gastos
+  useEffect(() => {
+    // Filtrar gastos que coincidan con categoria
+    if (filtro) {
+      const gastoFiltrado = gastos.filter(
+        (gasto) => gasto.categoria === filtro
+      );
+      // Agregar gasto filtrado al arreglo de gastos filtrados
+      setGastosFiltrados(gastoFiltrado);
+    }
+  }, [filtro]);
+
   return (
     <div className={modal ? "fijar" : ""}>
       <Header
@@ -127,10 +146,13 @@ function App() {
       {isValid ? (
         <>
           <main>
+            <Filtros filtro={filtro} setFiltro={setFiltro} />
             <ListadoGastos
               gastos={gastos}
               setGastoEditar={setGastoEditar}
               eliminarGasto={eliminarGasto}
+              filtro={filtro}
+              gastosFiltrados={gastosFiltrados}
             />
           </main>
           <div className="nuevo-gasto">
