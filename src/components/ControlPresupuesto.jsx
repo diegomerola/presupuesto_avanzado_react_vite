@@ -2,7 +2,14 @@ import React, { useEffect, useState } from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
-const ControlPresupuesto = ({ presupuesto, gastos }) => {
+const ControlPresupuesto = ({
+  presupuesto,
+  setPresupuesto,
+  setIsValid,
+  gastos,
+  setGasto,
+  setFiltro,
+}) => {
   // State para porcentaje gastado
   const [porcentaje, setPorcentaje] = useState(0);
 
@@ -49,6 +56,21 @@ const ControlPresupuesto = ({ presupuesto, gastos }) => {
     });
   };
 
+  // Funcion para resetear app
+  const resetearApp = () => {
+    // Vaciar presupuesto
+    setPresupuesto(0);
+
+    // Vaciar gastos
+    setGasto([]);
+
+    // Vaciar filtro
+    setFiltro([]);
+
+    // Volver a pantalla inicial
+    setIsValid(false);
+  };
+
   return (
     <div className="contenedor-presupuesto contenedor sombra dos-columnas">
       <CircularProgressbar
@@ -73,6 +95,13 @@ const ControlPresupuesto = ({ presupuesto, gastos }) => {
           <span>Gastado:</span>
           {formatearCantidad(gastado)}
         </p>
+        <button
+          className="reset-app"
+          type="button"
+          onClick={() => resetearApp()}
+        >
+          Reiniciar App
+        </button>
       </div>
     </div>
   );
